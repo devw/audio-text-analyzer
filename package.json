@@ -9,7 +9,6 @@
     "analyze:output": "node src/index.js input/sample.mp3 -o output/analysis.txt"
   },
   "dependencies": {
-    "whisper-node": "^0.1.2",
     "natural": "^6.12.0",
     "sentiment": "^5.0.2",
     "keyword-extractor": "^0.0.25",

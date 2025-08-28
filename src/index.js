@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
-const whisper = require('whisper-node');
+const { execSync } = require('child_process');
 const natural = require('natural');
 const Sentiment = require('sentiment');
 const keyword = require('keyword-extractor');
@@ -13,16 +13,24 @@ const sentiment = new Sentiment();
 
 async function transcribeAudio(filePath) {
   console.log('Transcribing audio...');
-  const options = {
-    modelName: "base",
-    whisperOptions: {
-      language: 'auto',
-      word_timestamps: false
+  try {
+    const whisperPath = path.join(__dirname, '../venv/bin/whisper');
+    const result = execSync(`"${whisperPath}" "${filePath}" --model base --output_format txt --output_dir /tmp`, 
+      { encoding: 'utf8' });
+    
+    const filename = path.basename(filePath, path.extname(filePath));
+    const transcriptPath = `/tmp/${filename}.txt`;
+    
+    if (fs.existsSync(transcriptPath)) {
+      const transcript = fs.readFileSync(transcriptPath, 'utf8');
+      fs.unlinkSync(transcriptPath); // Clean up
+      return transcript.trim();
+    } else {
+      throw new Error('Transcription file not found');
     }
-  };
-  
-  const transcript = await whisper(filePath, options);
-  return transcript;
+  } catch (error) {
+    throw new Error(`Transcription failed: ${error.message}`);
+  }
 }
 
 function analyzeText(text) {
