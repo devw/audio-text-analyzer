@@ -2,9 +2,33 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Install Dependencies",
+      "label": "Install Dependencies (npm)",
       "type": "shell",
       "command": "npm install",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Install Dependencies (yarn)",
+      "type": "shell",
+      "command": "yarn install",
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Setup Python Environment",
+      "type": "shell",
+      "command": "python3 -m venv venv && source venv/bin/activate && pip install openai-whisper",
       "group": "build",
       "presentation": {
         "echo": true,

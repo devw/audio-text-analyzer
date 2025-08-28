@@ -31,14 +31,30 @@ brew install ffmpeg
 
 ## Setup
 
-1. Install dependencies:
+1. Install Node.js dependencies:
 ```bash
+# Using npm
 npm install
+
+# Or using yarn
+yarn install
 ```
 
-2. Install Whisper (first run will download the model):
+2. Set up Python virtual environment and install Whisper:
 ```bash
+# Create virtual environment
+python3 -m venv venv
+
+# Activate virtual environment
+source venv/bin/activate   # Linux/macOS
+
+# Install Whisper
 pip install openai-whisper
+```
+
+3. For future runs, activate the virtual environment:
+```bash
+source venv/bin/activate   # Linux/macOS
 ```
 
 ## Usage
