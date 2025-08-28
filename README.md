@@ -1,0 +1,87 @@
+# Audio Text Analyzer
+
+A Node.js command-line tool that converts audio files (MP3/AAC) to text and performs comprehensive text analysis including summarization, keyword extraction, sentiment analysis, and more.
+
+## Project Structure
+
+```
+audio-text-analyzer/
+├── src/
+│   └── index.js          # Main application
+├── input/                # Place your audio files here
+├── output/               # Analysis reports will be saved here
+├── .vscode/              # VSCode configuration
+│   ├── launch.json       # Debug configurations
+│   └── tasks.json        # Task configurations
+├── package.json
+├── .gitignore
+└── README.md
+```
+
+## Prerequisites
+
+- Node.js (v14 or higher)
+- Python 3.7+ (required for Whisper)
+- FFmpeg (for audio processing)
+
+### Install FFmpeg on macOS:
+```bash
+brew install ffmpeg
+```
+
+## Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Install Whisper (first run will download the model):
+```bash
+pip install openai-whisper
+```
+
+## Usage
+
+### Command Line
+```bash
+# Basic usage
+node src/index.js input/your-audio.mp3
+
+# Save report to output directory
+node src/index.js input/your-audio.mp3 -o output/report.txt
+
+# Using npm scripts
+npm run analyze              # Analyzes input/sample.mp3
+npm run analyze:output       # Saves to output/analysis.txt
+```
+
+### VSCode Integration
+
+1. Place your audio file in the `input/` directory
+2. Use Ctrl+Shift+P → "Tasks: Run Task" → Select task
+3. Or use F5 to debug with the configured launch settings
+
+Available tasks:
+- **Install Dependencies**: Run `npm install`
+- **Run Audio Analyzer**: Analyze sample file
+- **Run with Output**: Analyze and save to output directory
+
+## Features
+
+- **Speech-to-Text**: Uses OpenAI Whisper for accurate transcription
+- **Summarization**: Extractive summary of key sentences
+- **Keyword Extraction**: Top 10 relevant keywords
+- **Sentiment Analysis**: Overall sentiment with scoring
+- **Named Entity Recognition**: People, places, organizations
+- **Topic Modeling**: Top 5 topics based on word frequency
+- **Reading Statistics**: Word count and estimated reading time
+
+## Supported Formats
+
+- MP3
+- AAC
+
+## Example Output
+
+The tool generates a comprehensive report including transcript, summary, keywords, sentiment analysis, named entities, and topic analysis.
