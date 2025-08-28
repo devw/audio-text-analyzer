@@ -220,6 +220,19 @@ async function main() {
   try {
     console.log('Starting audio analysis...\n');
     const { transcript, language } = await transcribeAudio(audioFile, options.language);
+    
+    // Always save transcript to output directory
+    const inputFilename = path.basename(audioFile, path.extname(audioFile));
+    const transcriptFile = path.join('output', `${inputFilename}.txt`);
+    
+    // Ensure output directory exists
+    if (!fs.existsSync('output')) {
+      fs.mkdirSync('output');
+    }
+    
+    fs.writeFileSync(transcriptFile, transcript);
+    console.log(`Transcript saved to: ${transcriptFile}`);
+    
     const analysis = analyzeText(transcript);
     console.log('Generating report...');
     generateReport(transcript, analysis, language, options.output);
