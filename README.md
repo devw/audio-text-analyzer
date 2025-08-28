@@ -61,15 +61,43 @@ source venv/bin/activate   # Linux/macOS
 
 ### Command Line
 ```bash
-# Basic usage
+# Basic usage (auto-detect language)
 node src/index.js input/your-audio.mp3
 
-# Save report to output directory
-node src/index.js input/your-audio.mp3 -o output/report.txt
+# Specify language
+node src/index.js input/your-audio.mp3 -l it    # Italian
+node src/index.js input/your-audio.mp3 -l fr    # French
+node src/index.js input/your-audio.mp3 -l en    # English
+node src/index.js input/your-audio.mp3 -l es    # Spanish
+node src/index.js input/your-audio.mp3 -l de    # German
+
+# Save report and transcript to output directory
+node src/index.js input/your-audio.mp3 -l it -o output/report.txt
 
 # Using npm scripts
 npm run analyze              # Analyzes input/sample.mp3
 npm run analyze:output       # Saves to output/analysis.txt
+```
+
+### Options
+- `-l, --language <lang>`: Language code (en, it, fr, es, de, etc.) - defaults to auto-detect
+- `-o, --output <file>`: Save full report to file and create separate transcript file
+
+### Progress Tracking
+The tool shows real-time progress during transcription:
+```
+Starting audio analysis...
+
+Starting transcription...
+
+Detected language: Italian
+[0%] Transcribing audio...
+[25%] Transcribing audio...
+[50%] Transcribing audio...
+[100%] Transcribing audio...
+Analyzing text...
+Generating report...
+Analysis complete!
 ```
 
 ### VSCode Integration
@@ -85,7 +113,8 @@ Available tasks:
 
 ## Features
 
-- **Speech-to-Text**: Uses OpenAI Whisper for accurate transcription
+- **Speech-to-Text**: Uses OpenAI Whisper for accurate transcription with real-time progress
+- **Language Support**: Auto-detect or manually specify language (Italian, French, English, Spanish, German, etc.)
 - **Summarization**: Extractive summary of key sentences
 - **Keyword Extraction**: Top 10 relevant keywords
 - **Sentiment Analysis**: Overall sentiment with scoring
@@ -93,11 +122,37 @@ Available tasks:
 - **Topic Modeling**: Top 5 topics based on word frequency
 - **Reading Statistics**: Word count and estimated reading time
 
+## Output Files
+
+### Terminal Output
+- Shows full report including transcript, analysis, and statistics
+
+### File Output (when using -o option)
+- **Report file**: Complete analysis report (specified filename)
+- **Transcript file**: Plain text transcript (filename_transcript.txt)
+
 ## Supported Formats
 
 - MP3
 - AAC
 
+## Supported Languages
+
+- English (en)
+- Italian (it)
+- French (fr)
+- Spanish (es)
+- German (de)
+- And many more supported by Whisper
+
 ## Example Output
 
-The tool generates a comprehensive report including transcript, summary, keywords, sentiment analysis, named entities, and topic analysis.
+The tool generates a comprehensive report including:
+- Detected/specified language
+- Full transcript
+- Text summary
+- Keywords
+- Sentiment analysis
+- Named entities
+- Topic analysis
+- Reading statistics

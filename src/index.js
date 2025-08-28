@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
-const { execSync } = require('child_process');
+const { spawn } = require('child_process');
 const natural = require('natural');
 const Sentiment = require('sentiment');
 const keyword = require('keyword-extractor');
@@ -11,33 +11,84 @@ const path = require('path');
 
 const sentiment = new Sentiment();
 
-async function transcribeAudio(filePath) {
-  console.log('Transcribing audio...');
-  try {
+async function transcribeAudio(filePath, language = 'auto') {
+  console.log('Starting transcription...');
+  
+  return new Promise((resolve, reject) => {
     const whisperPath = path.join(__dirname, '../venv/bin/whisper');
-    const result = execSync(`"${whisperPath}" "${filePath}" --model base --output_format txt --output_dir /tmp`, 
-      { encoding: 'utf8' });
-    
     const filename = path.basename(filePath, path.extname(filePath));
-    const transcriptPath = `/tmp/${filename}.txt`;
+    const outputDir = '/tmp';
     
-    if (fs.existsSync(transcriptPath)) {
-      const transcript = fs.readFileSync(transcriptPath, 'utf8');
-      fs.unlinkSync(transcriptPath); // Clean up
-      return transcript.trim();
-    } else {
-      throw new Error('Transcription file not found');
+    const args = [
+      filePath,
+      '--model', 'base',
+      '--output_format', 'txt',
+      '--output_dir', outputDir,
+      '--verbose', 'True'
+    ];
+    
+    if (language !== 'auto') {
+      args.push('--language', language);
     }
-  } catch (error) {
-    throw new Error(`Transcription failed: ${error.message}`);
-  }
+    
+    const whisper = spawn(whisperPath, args);
+
+    let progress = 0;
+    let detectedLanguage = language === 'auto' ? 'Unknown' : language;
+
+    whisper.stderr.on('data', (data) => {
+      const output = data.toString();
+      
+      // Extract language detection only if auto-detect
+      if (language === 'auto') {
+        const langMatch = output.match(/Detected language: (\w+)/);
+        if (langMatch) {
+          detectedLanguage = langMatch[1];
+          console.log(`\nDetected language: ${detectedLanguage}`);
+        }
+      }
+      
+      // Extract progress from Whisper output
+      const progressMatch = output.match(/(\d+)%/);
+      if (progressMatch) {
+        const newProgress = parseInt(progressMatch[1]);
+        if (newProgress > progress) {
+          progress = newProgress;
+          process.stdout.write(`\r[${progress}%] Transcribing audio...`);
+        }
+      }
+    });
+
+    whisper.on('close', (code) => {
+      console.log(''); // New line
+      
+      if (code === 0) {
+        const transcriptPath = `${outputDir}/${filename}.txt`;
+        
+        if (fs.existsSync(transcriptPath)) {
+          const transcript = fs.readFileSync(transcriptPath, 'utf8');
+          fs.unlinkSync(transcriptPath); // Clean up
+          resolve({ transcript: transcript.trim(), language: detectedLanguage });
+        } else {
+          reject(new Error('Transcription file not found'));
+        }
+      } else {
+        reject(new Error(`Whisper process exited with code ${code}`));
+      }
+    });
+
+    whisper.on('error', (error) => {
+      reject(new Error(`Failed to start Whisper: ${error.message}`));
+    });
+  });
 }
 
 function analyzeText(text) {
   console.log('Analyzing text...');
   
   // Summarization (extractive)
-  const sentences = natural.SentenceTokenizer.tokenize(text);
+  const sentenceTokenizer = new natural.SentenceTokenizer();
+  const sentences = sentenceTokenizer.tokenize(text);
   const summary = sentences.slice(0, Math.min(3, Math.ceil(sentences.length * 0.3))).join(' ');
   
   // Keyword extraction
@@ -60,7 +111,8 @@ function analyzeText(text) {
   };
   
   // Topic modeling (simple frequency-based)
-  const tokens = natural.WordTokenizer.tokenize(text.toLowerCase());
+  const wordTokenizer = new natural.WordTokenizer();
+  const tokens = wordTokenizer.tokenize(text.toLowerCase());
   const stopwords = natural.stopwords;
   const filteredTokens = tokens.filter(token => 
     !stopwords.includes(token) && token.length > 3
@@ -91,10 +143,12 @@ function analyzeText(text) {
   };
 }
 
-function generateReport(transcript, analysis, outputFile) {
+function generateReport(transcript, analysis, language, outputFile) {
   const report = `
 AUDIO TRANSCRIPTION & ANALYSIS REPORT
 =====================================
+
+LANGUAGE: ${language}
 
 TRANSCRIPT:
 ${transcript}
@@ -127,8 +181,14 @@ Generated on: ${new Date().toISOString()}
 `;
 
   if (outputFile) {
+    // Save full report to output file
     fs.writeFileSync(outputFile, report);
     console.log(`Report saved to: ${outputFile}`);
+    
+    // Save transcript to same directory as input file
+    const transcriptFile = outputFile.replace(/\.[^/.]+$/, '_transcript.txt');
+    fs.writeFileSync(transcriptFile, transcript);
+    console.log(`Transcript saved to: ${transcriptFile}`);
   } else {
     console.log(report);
   }
@@ -140,6 +200,7 @@ async function main() {
     .description('Convert audio to text and perform comprehensive analysis')
     .argument('<file>', 'Audio file path (MP3 or AAC)')
     .option('-o, --output <file>', 'Output file for the report')
+    .option('-l, --language <lang>', 'Language code (e.g., en, it, fr, es, de)', 'auto')
     .parse();
 
   const [audioFile] = program.args;
@@ -157,9 +218,12 @@ async function main() {
   }
 
   try {
-    const transcript = await transcribeAudio(audioFile);
+    console.log('Starting audio analysis...\n');
+    const { transcript, language } = await transcribeAudio(audioFile, options.language);
     const analysis = analyzeText(transcript);
-    generateReport(transcript, analysis, options.output);
+    console.log('Generating report...');
+    generateReport(transcript, analysis, language, options.output);
+    console.log('Analysis complete!');
   } catch (error) {
     console.error('Error:', error.message);
     process.exit(1);
