@@ -61,18 +61,14 @@ source venv/bin/activate   # Linux/macOS
 
 ### Command Line
 ```bash
-# Basic usage (auto-detect language)
-node src/index.js input/your-audio.mp3
+# Convert audio to text (auto or specified language)
+node src/audioToText.js input/sample.mp3 -l en
 
-# Specify language
-node src/index.js input/your-audio.mp3 -l it    # Italian
-node src/index.js input/your-audio.mp3 -l fr    # French
-node src/index.js input/your-audio.mp3 -l en    # English
-node src/index.js input/your-audio.mp3 -l es    # Spanish
-node src/index.js input/your-audio.mp3 -l de    # German
+# Save report and transcript
+node src/audioToText.js input/sample.mp3 -o output/analysis.txt
 
-# Save report and transcript to output directory
-node src/index.js input/your-audio.mp3 -l it -o output/report.txt
+# Convert SRT subtitles to plain text
+node src/subtitleToText.js input/sample.srt
 
 # Using npm scripts
 npm run analyze              # Analyzes input/sample.mp3
