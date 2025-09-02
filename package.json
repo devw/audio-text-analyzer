@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "analyze": "node src/index.js input/sample.mp3",
+    "analyze": "node src/index.js input/sample.mp3 -l en",
     "analyze:output": "node src/index.js input/sample.mp3 -o output/analysis.txt"
   },
   "dependencies": {
