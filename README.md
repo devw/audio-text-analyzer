@@ -9,7 +9,7 @@ audio-text-analyzer/
 ├── src/
 │   └── index.js          # Main application
 ├── input/                # Place your audio files here
-├── output/               # Analysis reports will be saved here
+├── output/               # Analysis reports & transcripts are saved here
 ├── .vscode/              # VSCode configuration
 │   ├── launch.json       # Debug configurations
 │   └── tasks.json        # Task configurations
@@ -29,6 +29,11 @@ audio-text-analyzer/
 brew install ffmpeg
 ```
 
+### Install FFmpeg on Linux (Debian/Ubuntu):
+```bash
+sudo apt update && sudo apt install -y ffmpeg
+```
+
 ## Setup
 
 1. Install Node.js dependencies:
@@ -40,26 +45,36 @@ npm install
 yarn install
 ```
 
-2. Set up Python virtual environment and install Whisper:
+2. Set up Python virtual environment and install Whisper (CLI):
 ```bash
-# Create virtual environment
+# Create virtual environment at project root (expected by src/index.js)
 python3 -m venv venv
 
 # Activate virtual environment
 source venv/bin/activate   # Linux/macOS
 
-# Install Whisper
+# Install Whisper CLI
 pip install openai-whisper
 ```
 
-3. For future runs, activate the virtual environment:
+3. For future runs, activate the virtual environment before using the tool:
 ```bash
 source venv/bin/activate   # Linux/macOS
 ```
 
 ## Usage
 
-### Command Line
+### Via npm scripts
+The scripts reflect common workflows and sample input.
+```bash
+# Analyze sample file at input/sample.mp3
+npm run analyze
+
+# Analyze sample file and save full report to output/analysis.txt
+npm run analyze:output
+```
+
+### Direct CLI
 ```bash
 # Basic usage (auto-detect language)
 node src/index.js input/your-audio.mp3
@@ -71,17 +86,13 @@ node src/index.js input/your-audio.mp3 -l en    # English
 node src/index.js input/your-audio.mp3 -l es    # Spanish
 node src/index.js input/your-audio.mp3 -l de    # German
 
-# Save report and transcript to output directory
+# Save report to a specific file (transcript is always saved to output/<input_name>.txt)
 node src/index.js input/your-audio.mp3 -l it -o output/report.txt
-
-# Using npm scripts
-npm run analyze              # Analyzes input/sample.mp3
-npm run analyze:output       # Saves to output/analysis.txt
 ```
 
 ### Options
 - `-l, --language <lang>`: Language code (en, it, fr, es, de, etc.) - defaults to auto-detect
-- `-o, --output <file>`: Save full report to file and create separate transcript file
+- `-o, --output <file>`: Save full report to file; transcript is also saved separately to `output/<input_basename>.txt`
 
 ### Progress Tracking
 The tool shows real-time progress during transcription:
@@ -113,7 +124,7 @@ Available tasks:
 
 ## Features
 
-- **Speech-to-Text**: Uses OpenAI Whisper for accurate transcription with real-time progress
+- **Speech-to-Text**: Uses OpenAI Whisper CLI for accurate transcription with real-time progress
 - **Language Support**: Auto-detect or manually specify language (Italian, French, English, Spanish, German, etc.)
 - **Summarization**: Extractive summary of key sentences
 - **Keyword Extraction**: Top 10 relevant keywords
@@ -127,9 +138,9 @@ Available tasks:
 ### Terminal Output
 - Shows full report including transcript, analysis, and statistics
 
-### File Output (when using -o option)
-- **Report file**: Complete analysis report (specified filename)
-- **Transcript file**: Plain text transcript (filename_transcript.txt)
+### File Output
+- **Transcript file**: Always saved to `output/<input_basename>.txt`
+- **Report file** (when using `-o` option): Complete analysis report at the specified path
 
 ## Supported Formats
 
@@ -145,14 +156,6 @@ Available tasks:
 - German (de)
 - And many more supported by Whisper
 
-## Example Output
-
-The tool generates a comprehensive report including:
-- Detected/specified language
-- Full transcript
-- Text summary
-- Keywords
-- Sentiment analysis
-- Named entities
-- Topic analysis
-- Reading statistics
+## Notes
+- Ensure the Python venv is created at the project root so the Whisper CLI is available at `venv/bin/whisper` as expected by the app.
+- If Whisper or FFmpeg are not found, verify your environment is activated and dependencies are installed.
