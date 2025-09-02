@@ -4,9 +4,8 @@
   "description": "Convert audio to text and perform comprehensive text analysis",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "analyze": "node src/index.js input/sample.mp3 -l en",
-    "analyze:output": "node src/index.js input/sample.mp3 -o output/analysis.txt",
+    "audioToText": "node src/audioToText.js input/sample.mp3 -l en",
+    "audioToText:output": "node src/audioToText.js input/sample.mp3 -o output/analysis.txt",
     "srtToTxt": "node src/subtitleToText.js input/sample.srt"
   },
   "dependencies": {
