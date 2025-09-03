@@ -8,8 +8,8 @@ A Node.js command-line tool that converts audio files (MP3/AAC) to text and perf
 audio-text-analyzer/
 ├── src/
 │   └── index.js          # Main application
-├── input/                # Place your audio files here
-├── output/               # Analysis reports & transcripts are saved here
+├── data/input/                # Place your audio files here
+├── data/output/               # Analysis reports & transcripts are saved here
 ├── .vscode/              # VSCode configuration
 │   ├── launch.json       # Debug configurations
 │   └── tasks.json        # Task configurations
@@ -67,22 +67,22 @@ source venv/bin/activate   # Linux/macOS
 ### Direct CLI
 ```bash
 # Convert audio to text (auto or specified language)
-node src/audioToText.js input/sample.mp3 -l en
+node src/audioToText.js data/input/sample.mp3 -l en
 
 # Save report and transcript
-node src/audioToText.js input/sample.mp3 -o output/analysis.txt
+node src/audioToText.js data/input/sample.mp3 -o data/output/analysis.txt
 
 # Convert SRT subtitles to plain text
-node src/subtitleToText.js input/sample.srt
+node src/subtitleToText.js data/input/sample.srt
 
 # Using npm scripts
-npm run analyze              # Analyzes input/sample.mp3
-npm run analyze:output       # Saves to output/analysis.txt
+npm run analyze              # Analyzes data/input/sample.mp3
+npm run analyze:output       # Saves to data/output/analysis.txt
 ```
 
 ### Options
 - `-l, --language <lang>`: Language code (en, it, fr, es, de, etc.) - defaults to auto-detect
-- `-o, --output <file>`: Save full report to file; transcript is also saved separately to `output/<input_basename>.txt`
+- `-o, --output <file>`: Save full report to file; transcript is also saved separately to `data/output/<input_basename>.txt`
 
 ### Progress Tracking
 The tool shows real-time progress during transcription:
@@ -103,7 +103,7 @@ Analysis complete!
 
 ### VSCode Integration
 
-1. Place your audio file in the `input/` directory
+1. Place your audio file in the `data/input/` directory
 2. Use Ctrl+Shift+P → "Tasks: Run Task" → Select task
 3. Or use F5 to debug with the configured launch settings
 
@@ -129,7 +129,7 @@ Available tasks:
 - Shows full report including transcript, analysis, and statistics
 
 ### File Output
-- **Transcript file**: Always saved to `output/<input_basename>.txt`
+- **Transcript file**: Always saved to `data/output/<input_basename>.txt`
 - **Report file** (when using `-o` option): Complete analysis report at the specified path
 
 ## Supported Formats

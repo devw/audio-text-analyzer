@@ -34,7 +34,7 @@ const srtToTxt = async (inputFile) => {
     const outputFile = path.basename(inputFile, path.extname(inputFile)) + ".txt";
     const content = await readSrtFile(inputFile);
     const text = parseSrtToText(content);
-    await writeTxtFile(`output/${outputFile}`, text);
+    await writeTxtFile(`data/output/${outputFile}`, text);
     console.log(`Successfully converted to: ${outputFile}`);
 };
 

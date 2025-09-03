@@ -97,6 +97,7 @@ output/*.json
 # Input files (optional - remove if you want to track sample files)
 input/*
 !input/.gitkeep
+data/*
 
 # OS generated files
 .DS_Store
