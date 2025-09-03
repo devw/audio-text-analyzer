@@ -64,16 +64,6 @@ source venv/bin/activate   # Linux/macOS
 
 ## Usage
 
-### Via npm scripts
-The scripts reflect common workflows and sample input.
-```bash
-# Analyze sample file at input/sample.mp3
-npm run analyze
-
-# Analyze sample file and save full report to output/analysis.txt
-npm run analyze:output
-```
-
 ### Direct CLI
 ```bash
 # Convert audio to text (auto or specified language)
