@@ -18,6 +18,17 @@
       "args": ["input/sample.mp3", "-o", "output/analysis.txt"],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Run Subtitle to Text",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/subtitleToText.js",
+      "args": [
+        "how-to-flirt.srt"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
