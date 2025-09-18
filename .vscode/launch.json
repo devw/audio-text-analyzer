@@ -11,11 +11,11 @@
       "cwd": "${workspaceFolder}"
     },
     {
-      "name": "Run with Output File",
+      "name": "Audio To Text ",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/src/index.js",
-      "args": ["input/sample.mp3", "-o", "output/analysis.txt"],
+      "program": "${workspaceFolder}/src/audioToText.js",
+      "args": ["~/Downloads/Sep15_13_02​_unicaf_techni.aac", "-o", "Sep15_13_02​_unicaf_techni.txt"],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     },
@@ -25,7 +25,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/src/subtitleToText.js",
       "args": [
-        "how-to-flirt.srt"
+        "xxxx.en.srt"
       ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
