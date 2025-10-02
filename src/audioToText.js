@@ -11,7 +11,7 @@ const parseCLIArgs = () => {
     program
         .name("audio-analyzer")
         .description("Convert audio to text and perform comprehensive analysis")
-        .argument("<file>", "Audio file path (MP3 or AAC)")
+        .argument("<file>", "Audio file path (MP3, AAC, or M4A)")
         .option("-o, --output <file>", "Output file for the report")
         .option("-l, --language <lang>", "Language code (e.g., en, it, fr, es, de)", "auto")
         .parse();
