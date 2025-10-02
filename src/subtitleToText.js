@@ -1,6 +1,5 @@
 const { readFile, writeFile } = require("fs").promises;
-const path = require("path");
-
+const config = require('./config');
 // Read the SRT file
 const readSrtFile = async (filePath) => await readFile(filePath, "utf-8");
 
@@ -30,11 +29,12 @@ const parseSrtToText = (content) => {
 const writeTxtFile = async (filePath, content) => await writeFile(filePath, content, "utf-8");
 
 // Main function
-const srtToTxt = async (inputFile) => {
-    const outputFile = path.basename(inputFile, path.extname(inputFile)) + ".txt";
+const srtToTxt = async (fName) => {
+    const inputFile = `${config.INPUT_DIR}/${fName}`
+    const outputFile = `${config.OUTPUT_DIR}/${fName}`
     const content = await readSrtFile(inputFile);
     const text = parseSrtToText(content);
-    await writeTxtFile(`output/${outputFile}`, text);
+    await writeTxtFile(outputFile, text);
     console.log(`Successfully converted to: ${outputFile}`);
 };
 

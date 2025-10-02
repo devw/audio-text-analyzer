@@ -11,11 +11,22 @@
       "cwd": "${workspaceFolder}"
     },
     {
-      "name": "Run with Output File",
+      "name": "Audio To Text ",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/src/index.js",
-      "args": ["input/sample.mp3", "-o", "output/analysis.txt"],
+      "program": "${workspaceFolder}/src/audioToText.js",
+      "args": ["/tmp/Context-Engineering-vs-Prompt-Engineering-Smarter-AI-with-RAG-Agents.m4a", "-o", "~/github/deep-archive/evol/output/Context-Engineering-vs-Prompt-Engineering.txt"],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Run Subtitle to Text",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/subtitleToText.js",
+      "args": [
+        "xxxx.en.srt"
+      ],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     }
