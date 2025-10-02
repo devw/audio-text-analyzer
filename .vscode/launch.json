@@ -15,7 +15,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/src/audioToText.js",
-      "args": ["~/Downloads/Sep15_13_02​_unicaf_techni.aac", "-o", "Sep15_13_02​_unicaf_techni.txt"],
+      "args": ["/tmp/Context-Engineering-vs-Prompt-Engineering-Smarter-AI-with-RAG-Agents.m4a", "-o", "~/github/deep-archive/evol/output/Context-Engineering-vs-Prompt-Engineering.txt"],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     },
