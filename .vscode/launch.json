@@ -15,7 +15,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/src/audioToText.js",
-      "args": ["/tmp/Context-Engineering-vs-Prompt-Engineering-Smarter-AI-with-RAG-Agents.m4a", "-o", "~/github/deep-archive/evol/output/Context-Engineering-vs-Prompt-Engineering.txt"],
+      "args": ["/tmp/LLM_Prompt_Formula.mp3", "-o", "~/github/deep-archive/evol/output/LLM_Prompt_Formula.txt"],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     },
