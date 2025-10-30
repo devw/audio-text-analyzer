@@ -1,6 +1,6 @@
 # Audio Text Analyzer
 
-A Node.js command-line tool that converts audio files (MP3/AAC) to text and performs comprehensive text analysis including summarization, keyword extraction, sentiment analysis, and more.
+A Node.js command-line tool that converts audio files (MP3/AAC/M4A) to text and performs comprehensive text analysis including summarization, keyword extraction, sentiment analysis, and more.
 
 ## Project Structure
 
@@ -68,6 +68,8 @@ source venv/bin/activate   # Linux/macOS
 ```bash
 # Convert audio to text (auto or specified language)
 node src/audioToText.js data/input/sample.mp3 -l en
+node src/audioToText.js data/input/sample.aac -l en
+node src/audioToText.js data/input/sample.m4a -l en
 
 # Save report and transcript
 node src/audioToText.js data/input/sample.mp3 -o data/output/analysis.txt
@@ -136,6 +138,7 @@ Available tasks:
 
 - MP3
 - AAC
+- M4A
 
 ## Supported Languages
 

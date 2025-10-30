@@ -24,8 +24,8 @@ const validateAudioFile = (audioFile) => {
     }
 
     const ext = path.extname(audioFile).toLowerCase();
-    if (![".mp3", ".aac"].includes(ext)) {
-        throw new Error("Unsupported file format. Use MP3 or AAC files.");
+    if (![".mp3", ".aac", ".m4a"].includes(ext)) {
+        throw new Error("Unsupported file format. Use MP3, AAC, or M4A files.");
     }
 };
 
