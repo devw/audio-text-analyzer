@@ -15,7 +15,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/src/audioToText.js",
-      "args": ["/tmp/LLM_Prompt_Formula.mp3", "-o", "~/github/deep-archive/evol/output/LLM_Prompt_Formula.txt"],
+      "args": ["~/Desktop/2025-10-29_at_15.04.38_Believe.mp3", "-o", "~/github/deep-archive/evol/output/Believe.txt"],
       "console": "integratedTerminal",
       "cwd": "${workspaceFolder}"
     },
