@@ -46,7 +46,7 @@ const createFinalReport = (transcript, analysis, language, outputFile) => {
 const main = async () => {
     try {
         const { audioFile, options } = parseCLIArgs();
-        const { transcript, language } = await processAudioFile(audioFile, options.language);
+        const { transcript, language, segments } = await processAudioFile(audioFile, options.language);
         const analysis = analyzeTranscript(transcript, audioFile);
         createFinalReport(transcript, analysis, language, options.output);
     } catch (error) {
